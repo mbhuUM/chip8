@@ -1,15 +1,43 @@
-CFLAGS  = -Wall -Wextra -pedantic -std=c99
-# LDFLAGS = -L/usr/local/lib
-# LDLIBS  = -lm -lSDL2
+# Compiler
+CC = g++
 
-sources = src/main.cpp src/chip8.cpp
-headers = src/inc/chip8.h
+# Compiler flags
+CFLAGS = -Wall -Wextra -std=c11
 
-all: bin/emulator.out
+# SDL2 flags and libraries
+SDL_PATH = C:/LibrariesCpp/SDL2/x86_64-w64-mingw32
+SDL_INCLUDE = $(SDL_PATH)/include
+SDL_LIB = $(SDL_PATH)/lib/
 
-bin/emulator.out: $(sources) $(headers)
-        @mkdir -p bin
-        $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(sources) $(LDLIBS)
+# SDL2 flags and libraries
+SDL_CFLAGS = -I$(SDL_INCLUDE)
+SDL_LIBS = -L$(SDL_LIB) -lSDL2main -lSDL2
 
+# Source files
+SRCS = src/main.cpp src/opcodes.cpp src/chip8.cpp
+
+HEADERS = src/include/chip8.h
+
+# Object files
+OBJS = $(SRCS:.c=.o)
+
+# Executable name
+TARGET = chip8
+
+# Default target
+all: $(TARGET)
+
+# Linking
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) -o $(TARGET) $(SDL_LIBS)
+
+# Compilation
+%.o: %.c
+	$(CC) $(CFLAGS) $(SDL_CFLAGS) -c $< -o $@
+
+# Clean up
 clean:
-        rm -rf bin
+	rm -rf $(OBJS) $(TARGET).exe
+
+# Phony targets
+.PHONY: all clean

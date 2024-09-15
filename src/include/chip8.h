@@ -33,12 +33,23 @@ class chip8 {
         unsigned char mem[4096];
 
         unsigned char display[64 * 32];
+        
+        chip8();
 
         void initialize();
 
         void emulateCycle();
 
+        // 00E0
+// Clear the screen
+void clear_screen_00E0(){
 
+}
+
+
+//Mapper that maps all the functions 
+void opcodeMapper(short opcode);
+   
 };
 
 #endif

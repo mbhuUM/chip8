@@ -60,12 +60,19 @@ void chip8::opcodeMapper(short opcode) {
         // 1nnn - JP addr
         // Jump to location nnn.
         // The interpreter sets the program counter to nnn.
-
+        case 0x1000:
+            this->PC = opcode | 0x1000;
+            break;
 
         // 2nnn - CALL addr
         // Call subroutine at nnn.
         // The interpreter increments the stack pointer, then puts the current PC on the top of the stack. The PC is then set to nnn.
-
+        case 0x2000:
+            this->SP++;
+            //TODO: FIGURE IF FIX IS NEEDED TO PUSH EVERYTHING ELSE DOWN
+            this->stack[15] = this->PC;
+            this->PC = opcode | 0x2000;
+            break;
 
         // 3xkk - SE Vx, byte
         // Skip next instruction if Vx = kk.
